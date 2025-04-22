@@ -44,8 +44,11 @@ public class FenetreLogiciel extends Application {
         Button button3 = new Button("Bouton 3");
         VBox buttons = new VBox(new Label("Boutons :"),button1, button2, button3);
         buttons.setSpacing(10.0);
-        buttons.setAlignment(Pos.CENTER);
-        root.setLeft(buttons);
+        buttons.setAlignment(Pos.CENTER);;
+        HBox buttonsAndLabels = new HBox(buttons,new Separator(Orientation.VERTICAL));
+        buttonsAndLabels.setAlignment(Pos.CENTER);
+        root.setLeft(buttonsAndLabels);
+
 
         //GridPane
         GridPane gridpane = new GridPane();
