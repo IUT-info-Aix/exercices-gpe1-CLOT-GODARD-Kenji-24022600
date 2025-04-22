@@ -55,13 +55,18 @@ public class FenetreLogiciel extends Application {
         gridpane.setHgap(5);
         gridpane.setVgap(10);
         gridpane.setAlignment(Pos.CENTER);
-        root.setCenter(gridpane);
+
 
         //Button under GridPane
         Button button4 = new Button("Submit");
         Button button5 = new Button("Cancel");
         HBox buttonsForm = new HBox(button4, button5);
-        root.setBottom(buttonsForm);
+        buttonsForm.setAlignment(Pos.CENTER);
+        VBox formBox = new VBox(gridpane,buttonsForm);
+        formBox.setAlignment(Pos.CENTER);
+        root.setCenter(formBox);
+        formBox.setSpacing(10);
+        buttonsForm.setSpacing(10);
 
         //Label
         HBox basDePages = new HBox(new Label("Ceci est un label de bas de page"));
