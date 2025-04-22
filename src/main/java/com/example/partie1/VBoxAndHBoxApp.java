@@ -69,3 +69,4 @@ public class VBoxAndHBoxApp extends Application {
         launch(args);
     }
 }
+
