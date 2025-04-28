@@ -44,6 +44,7 @@ public class FenetreLogiciel extends Application {
         Button button3 = new Button("Bouton 3");
         VBox buttons = new VBox(new Label("Boutons :"),button1, button2, button3);
         buttons.setSpacing(10.0);
+        buttons.setPadding(new Insets(10.0, 10.0, 10.0, 10.0));
         buttons.setAlignment(Pos.CENTER);;
         HBox buttonsAndLabels = new HBox(buttons,new Separator(Orientation.VERTICAL));
         buttonsAndLabels.setAlignment(Pos.CENTER);
@@ -72,7 +73,7 @@ public class FenetreLogiciel extends Application {
         buttonsForm.setSpacing(10);
 
         //Label
-        HBox basDePages = new HBox(new Label("Ceci est un label de bas de page"));
+        VBox basDePages = new VBox(new Separator(Orientation.HORIZONTAL),new Label("Ceci est un label de bas de page"));
         basDePages.setAlignment(Pos.CENTER);
         root.setBottom(basDePages);
 
