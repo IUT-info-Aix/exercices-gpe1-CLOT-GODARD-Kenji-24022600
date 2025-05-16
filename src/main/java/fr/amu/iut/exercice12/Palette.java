@@ -1,6 +1,7 @@
-package fr.amu.iut.exercice2;
+package fr.amu.iut.exercice12;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -10,73 +11,103 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-@SuppressWarnings("Duplicates")
 public class Palette extends Application {
 
     private Label texteDuHaut;
-
-    private CustomButton vert;
-    private CustomButton rouge;
-    private CustomButton bleu;
-
-    private CustomButton sourceOfEvent;
-
-    private BorderPane root;
-    private Pane panneau;
-    private HBox boutons;
-    private VBox bas;
     private Label texteDuBas;
+    private Pane panneau;
+    private CustomButton boutonVert;
+    private CustomButton boutonRouge;
+    private CustomButton boutonBleu;
 
-    private EventHandler<ActionEvent> gestionnaireEvenement;
+    // Référence vers le dernier bouton cliqué
+    private CustomButton sourceOfEvent;
 
     @Override
     public void start(Stage primaryStage) {
-        root = new BorderPane();
+        // Construction de l'interface
+        BorderPane root = new BorderPane();
+        root.setPadding(new Insets(10));
 
-        texteDuHaut = new Label();
-        texteDuHaut.setFont(Font.font("Tahoma",FontWeight.NORMAL, 20));
+        // Label du haut
+        texteDuHaut = new Label("Cliquez sur un bouton");
+        texteDuHaut.setAlignment(Pos.CENTER);
+        root.setTop(texteDuHaut);
         BorderPane.setAlignment(texteDuHaut, Pos.CENTER);
-        texteDuBas = new Label();
 
+        // Panneau central qui changera de couleur
         panneau = new Pane();
-        panneau.setPrefSize(400,200);
+        panneau.setPrefSize(300, 200);
+        root.setCenter(panneau);
 
-        boutons = new HBox(10);
+        // Boutons personnalisés en bas
+        HBox boutons = new HBox(10);
         boutons.setAlignment(Pos.CENTER);
-        boutons.setPadding(new Insets(10,5,10,5));
 
-        bas = new VBox();
-        bas.getChildren().addAll(boutons, texteDuBas);
-        bas.setAlignment(Pos.CENTER_RIGHT);
+        boutonVert = new CustomButton("Vert", "#00FF00");
+        boutonRouge = new CustomButton("Rouge", "#FF0000");
+        boutonBleu = new CustomButton("Bleu", "#0000FF");
 
-        vert = new CustomButton("Vert", "#31BCA4");
-        rouge = new CustomButton("Rouge", "#F21411");
-        bleu = new CustomButton("Bleu", "#3273A4");
+        boutons.getChildren().addAll(boutonVert, boutonRouge, boutonBleu);
 
-        gestionnaireEvenement = (event) -> {
+        // Label du bas
+        texteDuBas = new Label();
+        texteDuBas.setAlignment(Pos.CENTER);
+
+        // Layout vertical pour placer les boutons et le texte du bas
+        BorderPane bottomPane = new BorderPane();
+        bottomPane.setTop(boutons);
+        bottomPane.setBottom(texteDuBas);
+        BorderPane.setAlignment(boutons, Pos.CENTER);
+        BorderPane.setAlignment(texteDuBas, Pos.CENTER);
+        bottomPane.setPadding(new Insets(10));
+
+        root.setBottom(bottomPane);
+
+        // Créer le gestionnaire d'événements pour les boutons
+        EventHandler<ActionEvent> gestionnaireEvenement = event -> {
+            // Récupérer le bouton cliqué
             sourceOfEvent = (CustomButton) event.getSource();
+
+            // Incrémenter le compteur interne au bouton
+            sourceOfEvent.setNbClics(sourceOfEvent.getNbClics() + 1);
         };
 
-        vert.setOnAction(gestionnaireEvenement);
-        rouge.setOnAction(gestionnaireEvenement);
-        bleu.setOnAction(gestionnaireEvenement);
+        // Associer le gestionnaire d'événement aux boutons
+        boutonVert.setOnAction(gestionnaireEvenement);
+        boutonRouge.setOnAction(gestionnaireEvenement);
+        boutonBleu.setOnAction(gestionnaireEvenement);
 
-        boutons.getChildren().addAll(vert, rouge, bleu);
+        // Créer le listener pour les compteurs de clics
+        ChangeListener<Number> nbClicsListener = (observable, oldValue, newValue) -> {
+            // Mettre à jour le texte du haut
+            if (sourceOfEvent != null) {
+                texteDuHaut.setText(sourceOfEvent.getText() + " choisi " + newValue + " fois");
 
-        root.setCenter(panneau);
-        root.setTop(texteDuHaut);
-        root.setBottom(boutons);
+                // Mettre à jour la couleur du panneau
+                panneau.setStyle("-fx-background-color: " + sourceOfEvent.getCouleur() + ";");
 
-        Scene scene = new Scene(root);
+                // Mettre à jour le texte du bas
+                texteDuBas.setText("Le " + sourceOfEvent.getText() + " est une jolie couleur !");
+                texteDuBas.setStyle("-fx-text-fill: " + sourceOfEvent.getCouleur() + ";");
+            }
+        };
 
+        // Associer le listener aux compteurs des boutons
+        boutonVert.nbClicsProperty().addListener(nbClicsListener);
+        boutonRouge.nbClicsProperty().addListener(nbClicsListener);
+        boutonBleu.nbClicsProperty().addListener(nbClicsListener);
+
+        // Configuration et affichage de la scène
+        Scene scene = new Scene(root, 500, 350);
+        primaryStage.setTitle("Palette de couleurs");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
-

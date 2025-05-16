@@ -1,22 +1,31 @@
 package fr.amu.iut.exercice7;
 
 
-import javafx.fxml.Initializable;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-public class CounterController implements Initializable {
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 
-    int counter = 0;
+public class CounterController {
 
-    public void increment() {
+    @FXML
+    private Label labelCounter;
+
+    private int counter = 0;
+
+    @FXML
+    public void initialize() {
+        labelCounter.setText(String.valueOf(counter));
     }
 
-    public void decrement() {
+    @FXML
+    private void increment() {
+        counter++;
+        labelCounter.setText(String.valueOf(counter));
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("Initializing CounterController...");
-   }
+    @FXML
+    private void decrement() {
+        counter--;
+        labelCounter.setText(String.valueOf(counter));
+    }
 }
