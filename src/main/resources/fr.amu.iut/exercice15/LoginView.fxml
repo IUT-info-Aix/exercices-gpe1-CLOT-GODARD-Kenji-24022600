@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.GridPane?>
+
+<GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="fr.amu.iut.exercice15.LoginControl" hgap="10" vgap="10" alignment="CENTER">
+    <TextField fx:id="userId" promptText="User ID" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+    <Label text="User ID:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+
+    <PasswordField fx:id="pwd" promptText="Password" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+    <Label text="Password:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+
+    <Button text="OK" onAction="#okClicked" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+    <Button text="Cancel" onAction="#cancelClicked" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+</GridPane>
